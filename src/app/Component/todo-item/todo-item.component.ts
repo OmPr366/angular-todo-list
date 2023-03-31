@@ -9,7 +9,9 @@ import { Todo } from '../../Todo';
 export class TodoItemComponent {
 
   @Input() todo :  Todo | undefined;
-  @Output() todoDelete : EventEmitter<Todo> =  new EventEmitter;
+  @Input() index:  Number | undefined ;
+  @Output() todoDelete : EventEmitter<Todo> =  new EventEmitter();
+  @Output() todoToggleDone:  EventEmitter<Todo> =  new EventEmitter();
 
   constructor() { }
 
@@ -20,6 +22,10 @@ export class TodoItemComponent {
   onDeleteHandler (todo:Todo|undefined){
     this.todoDelete.emit(todo);
     console.log("Delete button clicked");
+  }
+
+  doneHandler(todo:Todo|undefined){
+    this.todoToggleDone.emit(todo)
   }
 
 }

@@ -4,52 +4,43 @@ import { Todo } from '../../Todo';
 @Component({
   selector: 'app-todos',
   templateUrl: './todos.component.html',
-  styleUrls: ['./todos.component.css']
+  styleUrls: ['./todos.component.css'],
 })
 export class TodosComponent {
-
-  todos : Todo[] | undefined;
+  todos: Todo[] | undefined;
   constructor() {
-    this.todos = [
-      {
-        sno: 1,
-        title: "This is a title2",
-        desc: "This is a description2",
-        active: true
-      },
-      {
-        sno: 2,
-        title: "lorum ipsum dolor sit amet",
-        desc: "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Donec auctor, nisl eget ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl eu nisl. Donec auctor, nisl eget ultricies lacinia, nisl nisl aliquam nisl, eget aliquam nisl nisl eu nisl.",
-        active: true
-      },
-      {
-        sno: 3,
-        title: "This is a title3",
-        desc: "This is a description",
-        active: true
-      }
-    ]
-   }
-
+    this.todos = [];
+  }
 
   ngOnInit(): void {
-
+    let todos = localStorage.getItem('todos');
+    if (todos === null) {
+      this.todos = [];
+    } else {
+      this.todos = JSON.parse(todos);
+    }
   }
 
-  deleteTodo (todo:Todo){
-
-    const index =  this.todos?.indexOf(todo);
+  deleteTodo(todo: Todo) {
+    const index = this.todos?.indexOf(todo);
 
     if (index !== undefined) {
-      this.todos?.splice(index,1);
+      this.todos?.splice(index, 1);
+      localStorage.setItem('todos', JSON.stringify(this.todos));
     }
-
-
   }
 
-  addTodo(todo:Todo){
+  addTodo(todo: Todo) {
     this.todos?.push(todo);
-    console.log("Added todo ",this.todos);
+    console.log('Added todo ', this.todos);
+    localStorage.setItem('todos', JSON.stringify(this.todos));
+  }
+
+  toggleDone(todo: Todo) {
+    const index = this.todos?.indexOf(todo) ;
+    if (index !== undefined && this.todos?.length) {
+      this.todos[index].active =  !this?.todos[index].active;
+      localStorage.setItem("todos",JSON.stringify(this.todos));
+    }
   }
 }
